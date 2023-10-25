@@ -14,7 +14,7 @@ interface SimpsonsShortsRepository {
 /**
  * A [SimpsonsShortsRepository] that connects to Cinderela CDN data source
  */
-class CinderelaShortsRepository(
+class CinderelaSimpsonsShortsRepository(
     private val client: CinderelaNetworkingClient
 ) : SimpsonsShortsRepository {
     override suspend fun all(): Result<List<String>> {
