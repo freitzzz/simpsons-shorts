@@ -24,7 +24,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
 
     implementation("com.github.kotlin-artisans:lumberkodee:0.0.1")
-
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
 
 compose.desktop {
