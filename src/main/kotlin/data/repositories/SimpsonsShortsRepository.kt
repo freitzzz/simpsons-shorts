@@ -18,7 +18,7 @@ class CinderelaSimpsonsShortsRepository(
     private val client: CinderelaNetworkingClient
 ) : SimpsonsShortsRepository {
     override suspend fun all(): Result<List<String>> {
-        val response = client.get("small-databases/simpson-shorts.json")
+        val response = client.get("small-databases/simpsons-shorts-hub.json")
 
         return response.map {
             Json.decodeFromStream<List<String>>(it.body)

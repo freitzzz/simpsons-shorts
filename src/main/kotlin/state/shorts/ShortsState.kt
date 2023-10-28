@@ -1,4 +1,5 @@
 package state.shorts
 
-typealias ShortsState = List<String>
-
+data class ShortsState(
+    val url: String
+)

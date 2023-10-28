@@ -1,25 +1,30 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import com.github.kotlinartisans.lumberkodee.logDebug
 import com.github.kotlinartisans.lumberkodee.putLumberkodeeToWork
 import core.ReactorComposer
 import core.Vault
 import data.clients.CinderelaNetworkingClient
 import data.repositories.CinderelaSimpsonsShortsRepository
 import data.repositories.SimpsonsShortsRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import logging.SimpsonsLumberkodeeClient
-import state.shorts.QueryAllShortsEvent
+import presentation.Progress
+import presentation.VideoPlayer
+import presentation.VideoPlayerState
+import state.shorts.NextShort
 import state.shorts.ShortsReactor
 
 @Composable
@@ -27,33 +32,30 @@ import state.shorts.ShortsReactor
 fun App(
     vault: Vault,
 ) {
-    var text by remember { mutableStateOf("Hello, World!") }
     val shortsReactor = ShortsReactor(vault.read())
 
     MaterialTheme {
-        Column {
-            Button(
-                onClick = {
-                    text = "Hello, Desktop!"
-                    logDebug("button was clicked")
-
-                    shortsReactor.add(QueryAllShortsEvent())
-                }) {
-                Text(text)
-            }
-
-            ReactorComposer(
-                shortsReactor,
-            ) {
-                LazyColumn {
-                    items(it) {
-                        Text(it)
+        ReactorComposer(
+            shortsReactor.apply {
+                add(NextShort())
+            },
+        ) {
+            if (it.url.isNotEmpty()) {
+                VideoPlayer(
+                    modifier = Modifier.fillMaxSize(),
+                    url = it.url,
+                    state = VideoPlayerState(
+                        progress = Progress(0f, 0),
+                    ),
+                    onFinish = {
+                        shortsReactor.add(NextShort())
                     }
-                }
+                )
             }
         }
     }
 }
+
 
 fun main() = application {
     putLumberkodeeToWork(
