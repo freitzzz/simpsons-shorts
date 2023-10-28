@@ -47,7 +47,6 @@ fun App(
             ) {
                 LazyColumn {
                     items(it) {
-                        println("!!!")
                         Text(it)
                     }
                 }
