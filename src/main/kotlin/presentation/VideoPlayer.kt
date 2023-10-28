@@ -5,7 +5,6 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
-import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery
@@ -133,13 +132,12 @@ fun VideoPlayerImpl(
     modifier: Modifier,
     onFinish: (() -> Unit)?
 ) {
-    println("oi")
     val mediaPlayerComponent = remember { initializeMediaPlayerComponent() }
     val mediaPlayer = remember { mediaPlayerComponent.mediaPlayer() }
     mediaPlayer.emitProgressTo(progressState)
     mediaPlayer.setupVideoFinishHandler(onFinish)
 
-    val factory = remember {{ mediaPlayerComponent }}
+    val factory = remember { { mediaPlayerComponent } }
     /* OR the following code and using SwingPanel(factory = { factory }, ...) */
     /* val factory by rememberUpdatedState(mediaPlayerComponent)*/
 
@@ -167,7 +165,6 @@ fun VideoPlayerImpl(
     DisposableEffect(Unit) { onDispose(mediaPlayer::release) }
     SwingPanel(
         factory = factory,
-        background = Color.Transparent,
         modifier = modifier,
     )
 }
