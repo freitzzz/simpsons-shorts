@@ -25,6 +25,7 @@ dependencies {
 
     implementation("com.github.kotlin-artisans:lumberkodee:0.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("uk.co.caprica:vlcj:4.7.0")
 }
 
 compose.desktop {
