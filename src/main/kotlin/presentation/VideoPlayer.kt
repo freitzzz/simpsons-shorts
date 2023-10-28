@@ -145,7 +145,7 @@ fun VideoPlayerImpl(
 
     LaunchedEffect(url) { mediaPlayer.media().play /*OR .start*/(url) }
     LaunchedEffect(seek) { mediaPlayer.controls().setPosition(seek) }
-    LaunchedEffect(speed) { mediaPlayer.controls().setRate(25f) }
+    LaunchedEffect(speed) { mediaPlayer.controls().setRate(speed) }
     LaunchedEffect(volume) { mediaPlayer.audio().setVolume(volume.toPercentage()) }
     LaunchedEffect(isResumed) { mediaPlayer.controls().setPause(!isResumed) }
     LaunchedEffect(!isFullscreen) {
@@ -169,9 +169,6 @@ fun VideoPlayerImpl(
         factory = factory,
         background = Color.Transparent,
         modifier = modifier,
-        update = {
-            println("AAAA")
-        }
     )
 }
 
