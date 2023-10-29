@@ -13,4 +13,10 @@ object Assets {
      */
     @Composable
     fun simpsonsTV() = painterResource("assets/tv-cover.png")
+
+    /**
+     * Provides a [androidx.compose.ui.graphics.painter.Painter] for rendering the app icon.
+     */
+    @Composable
+    fun appIcon() = painterResource("assets/icons/simpsons-shorts-icon.png")
 }

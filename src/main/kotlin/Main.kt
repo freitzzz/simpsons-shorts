@@ -18,6 +18,7 @@ import data.repositories.SimpsonsShortsRepository
 import logging.SimpsonsLumberkodeeClient
 import presentation.blocks.SimpsonsTV
 import presentation.blocks.VideoPlayer
+import presentation.fixed.Assets
 import presentation.fixed.Dimensions
 import presentation.fixed.half
 import state.shorts.NextShort
@@ -70,7 +71,8 @@ fun main() = application {
             size = Dimensions.windowSize,
         ),
         undecorated = true,
-        transparent = false,
+        title = "Simpsons Shorts",
+        icon = Assets.appIcon(),
         onCloseRequest = ::exitApplication
     ) {
         WindowDraggableArea(

@@ -12,7 +12,7 @@ repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     maven("https://jitpack.io")
-    
+
     google()
 }
 
@@ -34,8 +34,17 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "simpsons-shorts"
+            packageName = "Simpsons Shorts"
             packageVersion = "1.0.0"
+            description = "A desktop app to watch Simpsons shorts while your monolith app compiles. Made to learn Compose Multiplatform!"
+            copyright = "freitzzz"
+
+            windows {
+                iconFile.set(project.file("src/main/resources/assets/icons/simpsons-shorts-icon.ico"))
+            }
+            linux {
+                iconFile.set(project.file("src/main/resources/assets/icons/simpsons-shorts-icon.png"))
+            }
         }
     }
 }
