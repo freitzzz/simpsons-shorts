@@ -1,12 +1,11 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
@@ -16,14 +15,11 @@ import core.Vault
 import data.clients.CinderelaNetworkingClient
 import data.repositories.CinderelaSimpsonsShortsRepository
 import data.repositories.SimpsonsShortsRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import logging.SimpsonsLumberkodeeClient
-import presentation.Progress
-import presentation.VideoPlayer
-import presentation.VideoPlayerState
+import presentation.blocks.SimpsonsTV
+import presentation.blocks.VideoPlayer
+import presentation.fixed.Dimensions
+import presentation.fixed.half
 import state.shorts.NextShort
 import state.shorts.ShortsReactor
 
@@ -35,22 +31,24 @@ fun App(
     val shortsReactor = ShortsReactor(vault.read())
 
     MaterialTheme {
-        ReactorComposer(
-            shortsReactor.apply {
-                add(NextShort())
-            },
-        ) {
-            if (it.url.isNotEmpty()) {
-                VideoPlayer(
-                    modifier = Modifier.fillMaxSize(),
-                    url = it.url,
-                    state = VideoPlayerState(
-                        progress = Progress(0f, 0),
-                    ),
-                    onFinish = {
-                        shortsReactor.add(NextShort())
-                    }
-                )
+        Box {
+            SimpsonsTV()
+            ReactorComposer(
+                shortsReactor.apply {
+                    add(NextShort())
+                },
+            ) {
+                if (it.url.isNotEmpty()) {
+                    VideoPlayer(
+                        modifier = Modifier
+                            .size(Dimensions.videoPlayerSize)
+                            .align(Alignment.CenterStart.half()),
+                        url = it.url,
+                        onFinish = {
+                            shortsReactor.add(NextShort())
+                        }
+                    )
+                }
             }
         }
     }
@@ -69,11 +67,16 @@ fun main() = application {
     Window(
         resizable = false,
         state = WindowState(
-            size = DpSize(600.dp, 400.dp),
+            size = Dimensions.windowSize,
         ),
+        undecorated = true,
+        transparent = false,
         onCloseRequest = ::exitApplication
     ) {
-        App(vault)
+        WindowDraggableArea(
+        ) {
+            App(vault)
+        }
     }
 }
 

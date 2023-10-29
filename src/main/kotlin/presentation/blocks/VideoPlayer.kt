@@ -1,11 +1,10 @@
-package presentation
+package presentation.blocks
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
-import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery
@@ -30,7 +29,7 @@ data class Progress(
 @Composable
 fun VideoPlayer(
     url: String,
-    state: VideoPlayerState,
+    state: VideoPlayerState = VideoPlayerState(),
     modifier: Modifier = Modifier,
     onFinish: (() -> Unit)? = null
 ) = VideoPlayerImpl(
@@ -69,7 +68,7 @@ class VideoPlayerState(
     volume: Float = 1f,
     isResumed: Boolean = true,
     isFullscreen: Boolean = false,
-    progress: Progress
+    progress: Progress = Progress(0f, 0)
 ) {
 
     var seek by mutableStateOf(seek)
@@ -133,13 +132,12 @@ fun VideoPlayerImpl(
     modifier: Modifier,
     onFinish: (() -> Unit)?
 ) {
-    println("oi")
     val mediaPlayerComponent = remember { initializeMediaPlayerComponent() }
     val mediaPlayer = remember { mediaPlayerComponent.mediaPlayer() }
     mediaPlayer.emitProgressTo(progressState)
     mediaPlayer.setupVideoFinishHandler(onFinish)
 
-    val factory = remember {{ mediaPlayerComponent }}
+    val factory = remember { { mediaPlayerComponent } }
     /* OR the following code and using SwingPanel(factory = { factory }, ...) */
     /* val factory by rememberUpdatedState(mediaPlayerComponent)*/
 
@@ -167,7 +165,6 @@ fun VideoPlayerImpl(
     DisposableEffect(Unit) { onDispose(mediaPlayer::release) }
     SwingPanel(
         factory = factory,
-        background = Color.Transparent,
         modifier = modifier,
     )
 }
