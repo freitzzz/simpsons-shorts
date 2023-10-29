@@ -29,7 +29,7 @@ data class Progress(
 @Composable
 fun VideoPlayer(
     url: String,
-    state: VideoPlayerState,
+    state: VideoPlayerState = VideoPlayerState(),
     modifier: Modifier = Modifier,
     onFinish: (() -> Unit)? = null
 ) = VideoPlayerImpl(
@@ -68,7 +68,7 @@ class VideoPlayerState(
     volume: Float = 1f,
     isResumed: Boolean = true,
     isFullscreen: Boolean = false,
-    progress: Progress
+    progress: Progress = Progress(0f, 0)
 ) {
 
     var seek by mutableStateOf(seek)
