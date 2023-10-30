@@ -132,3 +132,7 @@ To build the app for local installation: `./gradlew createDistributable`
 To distribute the app: `./gradlew packageDistributionForCurrentOS`
 
 To simply run the app: `./gradlew run`
+
+## Demo
+
+https://github.com/freitzzz/simpsons-shorts/assets/26190214/9a14c1e2-f887-4340-89f6-82b24769a13d
